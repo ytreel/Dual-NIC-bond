@@ -1,0 +1,48 @@
+1. install the software necessary
+     #sudo apt-get install ifenslave
+   if can't find the ifenslave, please use ifenslave-2.6 instead.
+   
+2. add this line in the /etc/modules
+     bonding
+
+3. add these content in the /etc/network/interfaces
+     auto eth0
+     iface eth0 inet manual
+     bond-master bond0
+     bond-primary eth0
+     
+     auto eth2
+     iface eth2 inet manual
+     bond-master bond0
+     
+     auto bond0
+     iface bond0 inet static
+     address 10.10.1.83
+     netmask 255.255.0.0
+     gateway 10.10.0.1
+     bond-mode active-backup
+     bond-miimon 100
+     bond-slaves none
+     
+     auto eth1
+     iface eth1 inet manual
+     bond-master bond1
+     bond-primary eth1
+     
+     auto eth3
+     iface eth3 inet manual
+     bond-master bond1
+     
+     auto bond1
+     iface bond1 inet static
+     address 10.10.100.31
+     netmask 255.255.0.0
+     bond-mode active-backup
+     bond-miimon 100
+     bond-slaves none
+   
+4. load the bonding
+   sudo modprobe bonding
+   
+5. restart the system
+   reboot
